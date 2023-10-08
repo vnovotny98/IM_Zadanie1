@@ -2,6 +2,7 @@
 import csv
 import math
 import numpy as np
+import matplotlib.pyplot as plt
 
 # Otvoríme CSV súbor - uložený v rovnakom priečinku ako skript
 with open('matlabmja.csv', 'r') as file:
@@ -152,6 +153,106 @@ def spocitaj_vzajomne_korelacnu_funkciu(list1, list2):
     return vysledok
 
 
+def plot_histogram(data, filename):
+    """
+    Vytvorí histogram z dát v liste a uloží ho ako obrázok.
+
+    Args:
+        data (list): List hodnôt, pre ktorý sa má vytvoriť histogram.
+        filename (str): Názov súboru pre uloženie obrázku histogramu.
+
+    Returns:
+        None
+    """
+    # Vytvor histogram
+    plt.hist(data, bins=10, edgecolor='black', alpha=0.7)
+
+    # Pridaj popisky
+    plt.xlabel('Hodnota')
+    plt.ylabel('Frekvencia výskytu')
+    plt.title(filename)
+
+    # Ulož graf
+    plt.savefig(f"./Plots/{filename}.png")
+    plt.clf()
+
+
+def plot_diskr_dist_func(list, filename):
+    """
+    Vytvorí distribučnú funkciu pre diskrétne dáta a uloží ju ako obrázok.
+
+    Args:
+        data (list): List diskrétnych hodnôt.
+        filename (str): Názov súboru pre uloženie obrázku distribučnej funkcie.
+
+    Returns:
+        None
+    """
+    # Vzorové dáta
+    data = list
+
+    # Usporiadané dáta
+    usporiadane_data = sorted(data)
+
+    # Vytvorenie poľa s kumulatívnymi pravdepodobnosťami
+    cdf = np.arange(1, len(usporiadane_data) + 1) / len(usporiadane_data)
+
+    # Počet intervalov
+    pocet_intervalov = 20
+
+    # Rozdelenie dát do intervalov
+    hist, bin_edges = np.histogram(usporiadane_data, bins=pocet_intervalov)
+
+    # Vytvorenie poľa s kumulatívnymi pravdepodobnosťami z intervalového histogramu
+    cdf_intervalov = np.cumsum(hist) / len(usporiadane_data)
+
+    # Vytvorenie CDF grafu
+    plt.step(bin_edges[:-1], cdf_intervalov, where='post')
+
+    # Pridaj vertikalnu ciaru v x=0
+    plt.axvline(x=0, color='black', linestyle=':', label='Vertical Line at 0')
+
+    # Pridaj horizontalnu ciaru v  y=1
+    plt.axhline(y=1, color='black', linestyle=':', label='Horizontal Line at 1')
+
+    # Nastavenie popisov osí
+    plt.xlabel('Hodnota')
+    plt.ylabel('Kumulatívna pravdepodobnosť')
+    plt.title(filename + " 20 intervalov")
+
+    # Uloz graf
+    plt.savefig(f"./Plots/{filename}.png")
+    plt.clf()
+
+def plot_priebeh_funkcie(list, filename, x_axis_label, y_axis_label):
+    """
+    Vytvorí graf priebehu funkcie z dát a uloží ho ako obrázok.
+
+    Args:
+        data (list): List hodnôt pre graf.
+        filename (str): Názov súboru pre uloženie obrázku grafu.
+        x_axis_label (str): Popis osi x.
+        y_axis_label (str): Popis osi y.
+
+    Returns:
+        None
+    """
+    # Vzorové dáta
+    data = list
+
+    # Vytvorenie grafu
+    plt.plot(data)
+
+    # Nastavenie popisov osí
+    plt.xlabel(x_axis_label)
+    plt.ylabel(y_axis_label)
+    plt.title(filename)
+
+    # Zobrazenie grafu
+    plt.savefig(f"./Plots/{filename}.png")
+    plt.clf()
+
+
 # Spočítame stredné hodnoty pre 'u' a 'y'
 stredna_hodnota_u = spocitaj_strednu_hodnotu(list_u)
 stredna_hodnota_y = spocitaj_strednu_hodnotu(list_y)
@@ -186,3 +287,20 @@ print("Autokorelačná funkcia - y :", autokorelacna_func_y)
 vzajomne_korelacna_func_u_y = spocitaj_vzajomne_korelacnu_funkciu(list_u, list_y)
 
 print("Vzájomne korelačná funkcia:", vzajomne_korelacna_func_u_y)
+
+plot_histogram(list_u, "Histogram - U")
+plot_histogram(list_y, "Histogram - Y")
+
+plot_diskr_dist_func(list_u, "Diskrétna distribučná funkcia - U")
+plot_diskr_dist_func(list_u, "Diskrétna distribučná funkcia - Y")
+
+plot_priebeh_funkcie(list_u, "Priebeh - U", "Iteracia", "Hodnota")
+plot_priebeh_funkcie(list_y, "Priebeh - Y", "Iteracia", "Hodnota")
+
+plot_priebeh_funkcie(autokorelacna_func_u, "Autokorelacna Funkcia - U", "Prvok", "Hodnota")
+plot_priebeh_funkcie(autokorelacna_func_y, "Autokorelacna Funkcia - Y", "Prvok", "Hodnota")
+plot_priebeh_funkcie(vzajomne_korelacna_func_u_y, "Vzajomne korelacna Funkcia", "Prvok", "Hodnota")
+
+
+
+
