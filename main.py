@@ -33,7 +33,7 @@ def spocitaj_strednu_hodnotu(list):
     stredna_hodnota = 0
     suma = 0
     for i in range(len(list)):
-        suma += float(list[i])
+        suma += list[i]
 
     stredna_hodnota = (1 / len(list)) * suma
 
@@ -55,7 +55,7 @@ def spocitaj_rozptyl(list, stredna_hodnota):
     rozptyl = 0
     suma = 0
     for i in range(len(list)):
-        suma += pow((float(list[i]) - stredna_hodnota), 2)
+        suma += pow((list[i] - stredna_hodnota), 2)
 
     rozptyl = (1 / len(list)) * suma
 
@@ -78,7 +78,7 @@ def spocitaj_kovariaciu(list1, list2, stredna_hodnota1, stredna_hodnota2):
     """
     suma = 0
     for i in range(len(list1)):
-        suma += ((float(list1[i]) - stredna_hodnota1) * (float(list2[i]) - stredna_hodnota2))
+        suma += (list1[i] - stredna_hodnota1) * (list2[i] - stredna_hodnota2)
 
     kovariacia = (1 / len(list1)) * suma
 
@@ -119,7 +119,7 @@ def spocitaj_autokorelacnu_funkciu(list):
     maximalny_posun = int(0.1 * len(list))
     for i in range(maximalny_posun):
         for k in range(len(list) - maximalny_posun):
-            suma += float(list[k] * list[k + i])
+            suma += list[k] * list[k + i]
 
         suma = (1 / (len(list) - i)) * suma
         vysledok.append(suma)
@@ -144,7 +144,7 @@ def spocitaj_vzajomne_korelacnu_funkciu(list1, list2):
     maximalny_posun = int(0.1 * len(list1))
     for i in range(maximalny_posun):
         for k in range(len(list1) - maximalny_posun):
-            suma += float(list1[k] * list2[k + i])
+            suma += list1[k] * list2[k + i]
 
         suma = (1 / (len(list1) - i)) * suma
         vysledok.append(suma)
