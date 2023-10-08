@@ -272,12 +272,18 @@ kovariancia_u_y = spocitaj_kovarianciu(list_u, list_y, stredna_hodnota_u, stredn
 # Spočítame koeficient korelácie
 koeficient_korelacie = spocitaj_koeficient_korelacie(kovariancia_u_y, smer_odchylka_u, smer_odchylka_y)
 
+# Spočítáme kovarianční matici
+kovariancni_matice = (rozptyl_u*rozptyl_y)/-(kovariancia_u_y*kovariancia_u_y)
+
+
 # Vypíšeme výsledky
 print("Střední hodnota - vstup        :", stredna_hodnota_u)
 print("Střední hodnota - výstup        :", stredna_hodnota_y)
 
 print("Rozptyl - vstup        :", rozptyl_u)
-print("Rozptyl - výstup        :",rozptyl_y)
+print("Rozptyl - výstup        :", rozptyl_y)
+
+print("Kovarianční matice C(X)     :", kovariancni_matice)
 
 print("Korelačný koeficient - Spočítaný        :", koeficient_korelacie)
 
